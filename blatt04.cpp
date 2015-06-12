@@ -13,6 +13,8 @@ using namespace std;
 /// Konstante, die die Maschinengenauigkeit beschreibt.
 double const EPS = numeric_limits<double>::epsilon() / 2;
 
+/// Die Funktion liest eine Zahl ein und gibt tabellarisch
+/// die Annäherung an den Loarithmus derselben aus.
 int main_a()
 {
     // a einlesen.
@@ -58,34 +60,42 @@ int main_a()
     return 0;
 }
 
+/// Die Funktion versucht den Logarithmus des Zahl a zu bestimmen.
+/// Für Werte, die das Resultat 
 double mylog(double a)
 {
-    // Spezialfälle abfangen.
-    if (a < 0.0 or a != a)
+    if (a == numeric_limits<double>::infinity())
     {
-        errno = EDOM; // EDOM = Paramter außerhalb des Wertebreichs.
-        return numeric_limits<double>::quiet_NaN();
+        errno = ERANGE;
+        return a; // log(unendlich) = unendlich.
     }
-    if (a == 0.0) // besser a < eps (wobei eps klein, z. B. M.-Genauigkeit); (*)
+    else if (a > 0.0)
+    {
+        double x = a--; // Setze x = a - 1, dann verringere a um 1.
+        
+        // Solange die Bedingung gilt:
+        //  - Ziehe die Wurzel aus x mittels x = sqrt(x).
+        //  - Multipliziere a mit 2 und teile durch x (nach dem Ziehen der Wurze).
+        while (abs(x - 1.0) > EPS) a *= 2.0 / (1.0 + (x = sqrt(x)));
+        
+        return a;
+    }
+    else if (a == 0.0) // besser wäre a < eps (wobei eps klein, z. B. M.-Genauigkeit); (*)
     {
         errno = ERANGE; // ERANGE = Ergebniswert außerhalb des Wertebreichs.
         return -numeric_limits<double>::infinity();
     }
-    
-    // Berechnung.
-    double x = a--; // Setze x = a - 1, dann verringere a um 1.
-    
-    // Solange die Bedingung gilt:
-    //  - Ziehe die Wurzel aus x mittels x = sqrt(x).
-    //  - Multipliziere a mit 2 und teile durch x (nach dem Ziehen der Wurze).
-    while (abs(x - 1.0) > EPS) a *= 2.0 / (1.0 + (x = sqrt(x)));
-    
-    return a;
-    
+    else // a ist nicht im Definitionsbereich (auch nicht im weitesten Sinne, d. h. mit 0)
+    {
+        errno = EDOM; // EDOM = Paramter außerhalb des Definitionsbereichs.
+        return numeric_limits<double>::quiet_NaN();
+    }
     // (*) abs nicht notwendig, da a >= 0 aus obiger Bedingung folgt.
     // Es gibt Zahlen, die so klein sind, dass ihr Inverses nicht darstellbar ist.
 }
 
+/// Liest eine Zahl ein und gibt den mit mylog approximierten Wert aus.
+/// Es findet eine pauschale a-posteriori-Fehlerbehandlung statt.
 int main_b()
 {
     // a einlesen.
@@ -95,7 +105,7 @@ int main_b()
     
     errno = 0;              // Alte Fehler ignoreren.
     double l = mylog(a);    // Berechnung durchführen.
-    if (errno)         // Auf Fehler prüfen.
+    if (errno)              // Auf Fehler prüfen.
     {
         // Fehlermedlung ausgeben.
         cout << "Fehler aufgetreten. Details: " << strerror(errno) << endl;
@@ -111,6 +121,7 @@ int main_b()
     return 0;
 }
 
+/// Leitet den Benutzer zu einem der Aufgabenteile.
 int main()
 {
     for(;;)

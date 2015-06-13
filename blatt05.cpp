@@ -79,6 +79,7 @@ unsigned mult(unsigned a, unsigned b)
     // a nach rechts schieben, d. h. nächstes Bit verarbeiten.
     while ((a >>= 1) != 0u)
     {
+        // Ab hier gilt a != 0, laut Schleifenbedingung.
         if (b & HI_BIT) // Da a != 0 gilt, muss dies einen Überlauf darstellen.
         {
             errno = ERANGE;

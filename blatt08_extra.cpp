@@ -10,8 +10,6 @@
   * Dies wird nur genannt, um die Existenz klarzustellen. Wie sie aus-
   * sieht ist unerheblich und mit gegenwärzigen Mitteln nicht einfach
   * zu erreichen.
-  * 
-  * Evtl. wird eine solche Lösung in einer weiteren Datei nachgereicht.
   */
 
 #include <iostream>
@@ -60,13 +58,14 @@ void newton_maehly(double           x0,         // Startwert der Suche
         unsigned k = itmax;
         do
         {
+            if (--k == 0) return;
             xk = xkp1;
             double p_xk;
             double pxk = p(xk, p_xk);
             for (unsigned i = 0; i < m; ++i) p_xk -= pxk / (xk - xs[i]);
             xkp1 -= pxk / p_xk;
         }
-        while ( --k  and  abs(xkp1 - xk) > eps * max(1.0, abs(xkp1)) );
+        while ( abs(xkp1 - xk) > eps * max(1.0, abs(xkp1)) );
         xs.push_back(xkp1);
     }
 }
@@ -99,6 +98,6 @@ int main()
     cin >> x0;
     
     vector<double> xs;
-    newton_maehly(x0, n, 20, 1e-10, xs, poly(a));
+    newton_maehly(x0, n, 20, 1e-12, xs, poly(a));
     ausgabe(n, xs);
 }

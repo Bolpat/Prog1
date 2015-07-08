@@ -47,12 +47,14 @@ void newton_maehly(double           x0,         // Startwert der Suche
     // Es wird die (m + 1)-te Nullstelle gesucht.
     for (int m = 0; m < n; ++m)
     {
-        double xk,          // x(k+1): Variablen muss für Vergleich...
+        double xk,          // x(k+1): Variablen müssen für Vergleich...
                xkp1 = x0;   // ...außerhalb der Schleife deklariert werden.
                             // Startwert für xk ist das gegebene x0.
         int k = 0;          // Zähler für itmax.
         do
         {
+            // Suche nach Nullstelle beenden, falls Iterationsschrake überschritten wurde.
+            if (k > itmax) return;
             xk = xkp1;      // Alten Wert zuweisen; im Folgenden xk neu bestimmen.
             
             double p_xk;    // p'(xk): Da als Referenzparameter eingesetzt, vorher zu deklarieren
@@ -63,7 +65,7 @@ void newton_maehly(double           x0,         // Startwert der Suche
             // x(k+1) = xk von oben. Wird hier aktualisiert.
             xkp1 -= pxk / p_xk;
         }
-        while ( ++k < itmax  and  abs(xkp1 - xk) > eps * max(1.0, abs(xkp1)) );
+        while ( abs(xkp1 - xk) > eps * max(1.0, abs(xkp1)) );
         
         // Ermittelte Näherung an die Nullstelle hinten an den Vektor anhängen.
         xs.push_back(xkp1);
@@ -93,8 +95,6 @@ int main()
     // Ergebnisvektor.
     vector<double> xs;
     
-    
-  ask_again: // Falls der Benutzer eine ungültige Aufgabennummer wählt.
     char antw;
     cout << "Aufgabennummer: " << flush;
     cin  >> antw;
@@ -117,7 +117,8 @@ int main()
             p = p3;
             break;
         default:
-            goto ask_again;
+            cout << "Ungültige Wahl." << endl;
+            return 0;
     }
     
     newton_maehly(x0, n, 20, 1e-12, xs, p);

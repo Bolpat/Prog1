@@ -54,7 +54,7 @@ void newton_maehly(double           x0,         // Startwert der Suche
         do
         {
             // Suche nach Nullstelle beenden, falls Iterationsschrake überschritten wurde.
-            if (k > itmax) return;
+            if (++k > itmax) return;
             xk = xkp1;      // Alten Wert zuweisen; im Folgenden xk neu bestimmen.
             
             double p_xk;    // p'(xk): Da als Referenzparameter eingesetzt, vorher zu deklarieren

@@ -29,9 +29,10 @@ public:
 
     double operator()(double x, double & deriv)
     {
-        double result = 0;
         deriv = 0;
-
+        if (a.empty()) return 0;
+        
+        double result = 0;
         for (unsigned i = a.size() - 1; ; --i)
         {
             result *= x;

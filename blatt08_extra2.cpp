@@ -16,7 +16,7 @@ public:
     {
         double result = 0;
         deriv = 0;
-        if (a.empty()) return;
+        if (a.empty()) return result;
         for (unsigned i = a.size() - 1; ; --i)
         {
             result *= x;

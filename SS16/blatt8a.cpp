@@ -34,28 +34,28 @@ int main(int argc, char ** argv)
         unsigned int u[] = { 0, 0, 0, 0 };
         switch (ein.gcount())
         {
-        case 3:
+          case 3:
             u[3] |= (cv[2] & 0x3F) << 0;
-            u[2] |=                         (cv[2] & 0xC0) >> 6;
+            u[2] |= (cv[2] & 0xC0) >> 6;
             // fallthrough!
-        case 2:
+          case 2:
             u[2] |= (cv[1] & 0x0F) << 2;
-            u[1] |=                         (cv[1] & 0xF0) >> 4;
+            u[1] |= (cv[1] & 0xF0) >> 4;
             // fallthrough!
-        case 1:
+          case 1:
             u[1] |= (cv[0] & 0x03) << 4;
-            u[0] |=                         (cv[0] & 0xFC) >> 2;
+            u[0] |= (cv[0] & 0xFC) >> 2;
         }
         char out[] = "====";
         switch (ein.gcount())
         {
-        case 3:
+          case 3:
             out[3] = b[u[3]];
             // fallthrough!
-        case 2:
+          case 2:
             out[2] = b[u[2]];
             // fallthrough!
-        case 1:
+          case 1:
             out[1] = b[u[1]];
             out[0] = b[u[0]];
         }

@@ -42,21 +42,20 @@ double WertAusdruck()
 {
     double summe;
     char z = cin.peek();
-    switch (z) {
+    switch (z)
+    {
         case '+': cin >> z; str += z; summe =  WertTerm(); break;
         case '-': cin >> z; str += z; summe = -WertTerm(); break;
         default :                     summe =  WertTerm(); break;
     }
     
-    z = cin.peek();
-    while( z == '+' or z == '-' )
+    while (z = cin.peek(), z == '+' || z == '-')
     {
         switch(z)
         {
             case '+': cin >> z; str+=z; summe += WertTerm(); break;
             case '-': cin >> z; str+=z; summe -= WertTerm(); break;
         }
-        z = cin.peek();
     }
     return summe;    
 }
@@ -64,15 +63,14 @@ double WertAusdruck()
 double WertTerm()
 {
     double produkt = WertFaktor();
-    char z = cin.peek();
-    while (z == '*' or z == '/')
+    char z;
+    while (z = cin.peek(), z == '*' || z == '/')
     {
         switch (z)
         {
             case '*': cin >> z; str += z; produkt *= WertFaktor(); break;
             case '/': cin >> z; str += z; produkt /= WertFaktor(); break;
         }
-        z = cin.peek();
     }
     return produkt;
 }
@@ -89,7 +87,7 @@ double WertFaktor()
         str += z;
         pot = pow(pot, WertOperand()); // ...Potenz zurückgeben...
     }
-    // ...ansonsten hatten war das Ergebnis schon vorher richtig.
+    // ...ansonsten war das Ergebnis schon vorher richtig.
     return pot;
 }
 
@@ -156,7 +154,7 @@ void fehler(string const & msg)
     cout << "Fehler: " << msg << endl;
     if (str[str.size() - 1] == '\n') str.resize(str.size() - 1);
     cout << str << endl;
-    for (size_t i = 0; i < str.size()-1; ++i) cout << ' ';
-    cout << "~|~" << endl;
+    for (size_t i = 0; i < str.size(); ++i) cout << ' ';
+    cout << "^" << endl;
     exit(1);
 }

@@ -1,8 +1,3 @@
-/* Loesungsentwurf zu Aufgabe 8a, SS 2016
-   Programmieren I fuer Mathematiker
-
-   Aenderung: read+gcount statt readsome verwendet */
-
 #include <iostream>
 #include <iomanip>
 #include <fstream>

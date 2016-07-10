@@ -1,8 +1,3 @@
-/* Loesungsentwurf zu Aufgabe 11, SS 2016
-   Programmieren I fuer Mathematiker        
-
-   Uebersetzen: c++ loes11.cpp -o range   */
-
 #include <iostream>
 #include <fstream>
 #include <sstream>

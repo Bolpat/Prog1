@@ -1,5 +1,5 @@
 /* Loesungsentwurf zu Aufgabe 8a, SS 2016
-   Programmieren I fuer Mathematiker         
+   Programmieren I fuer Mathematiker
 
    Aenderung: read+gcount statt readsome verwendet */
 
@@ -19,12 +19,22 @@ int main(int argc, char ** argv)
     }
 
     const char b[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    
+
     // Eingabestrom mit Datei verknuepfen und oeffnen
     ifstream ein(argv[1], ios::binary);
+    if (!ein)
+    {
+        cerr << "Kann Datei '" << argv[1] << "' nicht oeffnen" << endl;
+        return 1;
+    }
 
     // Ausgabestrom mit Datei verknuepfen und offnen
     ofstream aus(argv[2]);
+    if (!aus)
+    {
+        cerr << "Kann Datei '" << argv[1] << "' nicht schreiben" << endl;
+        return 1;
+    }
 
     // Umwandlung binaer->base64 durchführen
     int blocks = 19;

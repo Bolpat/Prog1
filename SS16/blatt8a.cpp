@@ -21,12 +21,13 @@ int main(int argc, char ** argv)
     const char b[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     
     // Eingabestrom mit Datei verknuepfen und oeffnen
-    ifstream ein(argv[1]);
+    ifstream ein(argv[1], ios::binary);
 
     // Ausgabestrom mit Datei verknuepfen und offnen
     ofstream aus(argv[2]);
 
     // Umwandlung binaer->base64 durchführen
+    int blocks = 19;
     char cv[3];   // zur Benutzung von read
     while (ein.read(cv, 3), ein.gcount() > 0)
     {
@@ -34,16 +35,16 @@ int main(int argc, char ** argv)
         switch (ein.gcount())
         {
         case 3:
-            u[3] |= (cv[2] & 0x3F);
-            u[2] |= (cv[2] & 0xC0) >> 6;
+            u[3] |= (cv[2] & 0x3F) << 0;
+            u[2] |=                         (cv[2] & 0xC0) >> 6;
             // fallthrough!
         case 2:
             u[2] |= (cv[1] & 0x0F) << 2;
-            u[1] |= (cv[1] & 0xF0) >> 4;
+            u[1] |=                         (cv[1] & 0xF0) >> 4;
             // fallthrough!
         case 1:
             u[1] |= (cv[0] & 0x03) << 4;
-            u[0] |= (cv[0] & 0xFB) >> 2;
+            u[0] |=                         (cv[0] & 0xFC) >> 2;
         }
         char out[] = "====";
         switch (ein.gcount())
@@ -59,7 +60,12 @@ int main(int argc, char ** argv)
             out[0] = b[u[0]];
         }
         aus << out;
+        if (--blocks == 0)
+        {
+            aus << endl;
+            blocks = 19;
+        }
     }
-    aus << endl;
+    if (blocks != 0) aus << endl;
     return 0;
 }

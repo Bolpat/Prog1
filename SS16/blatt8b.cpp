@@ -19,14 +19,7 @@ bool is_base64_char(char c)
         || c == '=';
 }
 
-bool is_base64_part(char cv[4])
-{
-    return is_base64_char(cv[0])
-        && is_base64_char(cv[1])
-        && is_base64_char(cv[2])
-        && is_base64_char(cv[3]);
-}
-
+/// Base64-Alphabet --> { 0, ..., 63 }
 unsigned char base64_to_binary(char c)
 {
     if ('A' <= c && c <= 'Z') return  0 + (c - 'A');
@@ -38,11 +31,26 @@ cerr << "incorrect character: " << (char)c << endl;
     return 0xFF;
 }
 
-int count_fin(char cv[4])
+/// Zaehlt die informationstragenden Zeichen in cv. Das sind alle auszer '='.
+int count_valid(char cv[4])
 {
-    if (cv[2] != '=') return 0;
-    if (cv[3] != '=') return 1;
+    if (cv[3] != '=') return 4;
+    if (cv[2] != '=') return 3;
     return 2;
+}
+
+/// Liest Base64-Zeichen in buf. buf muss n Zeichen aufnehmen koennen.
+/// Nicht-Base64-Zeichen werden uebersprungen.
+/// Die Funktion gibt zurueck, wie viele Zeichen in buf geschrieben wurden.
+int read_base64(istream & i, char * buf, int n)
+{
+    int k = 0;
+    while (k < n && (i >> *buf) && is_base64_char(*buf))
+    {
+        ++k;
+        ++buf;
+    }
+    return k;
 }
 
 int main(int argc, char ** argv)
@@ -52,46 +60,49 @@ int main(int argc, char ** argv)
         cerr << "Not enough arguments. Use " << argv[0] << " input-file-name output-file-name" << endl;
         return 1;
     }
-
-    const char b[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     
     // Eingabestrom mit Datei verknuepfen und oeffnen
     ifstream ein(argv[1]);
-
-    // Ausgabestrom mit Datei verknuepfen und offnen
-    ofstream aus(argv[2]);
-    
-    char cv[4];
-    while (ein.read(cv, 4), ein.gcount() > 0)
+    if (!ein)
     {
-        if (!(ein.gcount() == 4 && is_base64_part(cv)))
-        {
-            cerr << "Input file is not base64." << endl;
-            return 1;
-        }
-        
+        cerr << "Kann Datei '" << argv[1] << "' nicht oeffnen" << endl;
+        return 1;
+    }
+
+    // Ausgabestrom mit Datei verknuepfen und oeffnen
+    ofstream aus(argv[2], ios::binary);
+    if (!aus)
+    {
+        cerr << "Kann Datei '" << argv[1] << "' nicht schreiben" << endl;
+        return 1;
+    }
+    
+    // Dekodieren
+    char cv[4];
+    int count = 0;
+    while ((count = read_base64(ein, cv, 4)) == 4)
+    {
         unsigned char out[] = { 0, 0, 0 };
-        switch (count_fin(cv))
+        switch (count_valid(cv))
         {
-        case 2:
-            out[2] |= (base64_to_binary(cv[3]) & 0x3F);
+          case 4:
+            out[2] |= (base64_to_binary(cv[3]) & 0x3F) >> 0;
             // fallthrough!
-        case 1:
+          case 3:
             out[2] |= (base64_to_binary(cv[2]) & 0x03) << 6;
-            out[1] |= (base64_to_binary(cv[2]) & 0x3C) << 2;
+            out[1] |= (base64_to_binary(cv[2]) & 0x3C) >> 2;
             // fallthrough!
-        case 0:
+          default:
             out[1] |= (base64_to_binary(cv[1]) & 0x0F) << 4;
+            out[0] |= (base64_to_binary(cv[1]) & 0x30) >> 4;
             out[0] |= (base64_to_binary(cv[0]) & 0x3F) << 2;
         }
-        switch (count_fin(cv))
-        {
-        case 2:
-            aus << out[0] << out[1];
-            // fallthrough!
-        default:
-            aus << out[2];
-        }
+        aus.write(reinterpret_cast<char *>(out), count_valid(cv) - 1);
+    }
+    if (count != 0)
+    {
+        cerr << "Unvollstaendige Base64-datei" << endl;
+        return 1;
     }
     return 0;
 }

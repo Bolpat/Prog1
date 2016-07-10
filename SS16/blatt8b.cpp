@@ -1,5 +1,5 @@
 /* Loesungsentwurf zu Aufgabe 8a, SS 2016
-   Programmieren I fuer Mathematiker         
+   Programmieren I fuer Mathematiker
 
    Aenderung: read+gcount statt readsome verwendet */
 
@@ -60,7 +60,7 @@ int main(int argc, char ** argv)
         cerr << "Not enough arguments. Use " << argv[0] << " input-file-name output-file-name" << endl;
         return 1;
     }
-    
+
     // Eingabestrom mit Datei verknuepfen und oeffnen
     ifstream ein(argv[1]);
     if (!ein)
@@ -76,7 +76,7 @@ int main(int argc, char ** argv)
         cerr << "Kann Datei '" << argv[1] << "' nicht schreiben" << endl;
         return 1;
     }
-    
+
     // Dekodieren
     char cv[4];
     int count = 0;

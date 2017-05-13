@@ -11,7 +11,7 @@ double sin_Fkt(double x)
   //   let s_(k+1) = s_k + a_(k + 1) where
   //       a_(k+1) = a_k * (-x*x) / (2*k + 1) / (2*k)
   for (int k = 1; abs(a) > 1e-15*abs(s); ++k)
-    s += (a *= -(x*x) / (2*k + 1) / (2*k);
+    s += (a *= -(x*x) / (2*k + 1) / (2*k));
   return s;
 }
 

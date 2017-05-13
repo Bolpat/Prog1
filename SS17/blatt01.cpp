@@ -6,24 +6,30 @@ using namespace std;
 
 double sin_Fkt(double x)
 {
-  double s = x, a = x;
+  double a = x, s = a; // a_0 = x, s_0 = a_0
+  // for k = 1, while abs(a) > eps * abs(s):
+  //   let s_(k+1) = s_k + a_(k + 1) where
+  //       a_(k+1) = a_k * (-x*x) / (2*k + 1) / (2*k)
   for (int k = 1; abs(a) > 1e-15*abs(s); ++k)
-    s += (a *= -(x*x) / ((2*k + 1)*2*k));
+    s += (a *= -(x*x) / (2*k + 1) / (2*k);
   return s;
 }
 
 int main()
 {
+  // x einlesen und zur Kontrolle mit 4 Dezimalstellen ausgeben.
   double x;
   cout << "x:";
   cin >> x;
   cout << "x = " << setprecision(4) << x << endl;
   
+  // Den Sinus von x mit der Standardbibliotheksfunktion mit 15 Dezimalstellen ausgeben.
   cout << "sin(x) = " << setprecision(15) << sin(x) << endl;
   
-  // Faktor vor dem Sinus.
+  // Faktor, der am Ende vor dem Sinus steht.
   // Am Ende ist a == 1.0 oder a == -1.0.
   double a = 1.0;
+  
   if (x < 0.0)
     x = -x, a = -a;
   x = fmod(x, 2*M_PI);

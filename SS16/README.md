@@ -1,0 +1,1 @@
+Dieser Ordner enthält nicht alle Aufgaben, die in diesem Semester gestellt wurden sondern nur die, die vom [letzten Semester](../SS15) abweichen.

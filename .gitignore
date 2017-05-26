@@ -3,11 +3,10 @@
 
 # But not these files...
 !.gitignore
+!SS??
+!WS??
 !SS??/blatt??.cpp
 !SS??/blatt??_*.cpp
 !WS??/blatt??.cpp
 !WS??/blatt??_*.cpp
 # etc...
-
-# ...even if they are in subdirectories
-!*/

@@ -7,7 +7,7 @@
 
 using namespace std;
 
-int main()
+int main_a()
 {
     // a und b einlesen, eps (in Abhängigkeit von a) bestimmen.
     double a, b;
@@ -31,9 +31,9 @@ int main()
     int    n = 0;
     while (w > eps)
     {
-        double a_ = a;    // a_ ist eine Hilfsvariable und sichert a...
-        a = (a + b) / 2;  // ...das hier verändert wird...
-        b = sqrt(a_ * b); // ...hier jedoch der alte Wert gebraucht wird.
+        double a_ = a;    // a_ ist eine Hilfsvariable und sichert a ...
+        a = (a + b) / 2;  // ... das hier verändert wird...
+        b = sqrt(a_ * b); // ... hier jedoch der alte Wert gebraucht wird.
         
         c *= c;
         c /= 16 * a * a;
@@ -45,10 +45,11 @@ int main()
     
     U *= 2 * M_PI / a;
     cout << scientific << setprecision(15) << U << endl;
+    
+    return 0;
 }
 
-/*
-int main()
+int main_b()
 {
     // a und b einlesen.
     double a, b;
@@ -81,5 +82,22 @@ int main()
     U *= 2 * M_PI * a;
     
     cout << scientific << setprecision(15) << U << endl;
+    
+    return 0;
 }
-*/
+
+int main()
+{
+    char aufg;
+    while (true)
+    {
+        cout << "Teilaufgabe (a/b): " << flush;
+        cin >> aufg;
+        switch (aufg)
+        {
+            case 'a': return main_a();
+            case 'b': return main_b();
+        }
+    }
+    return 0;
+}

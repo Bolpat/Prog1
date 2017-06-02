@@ -38,6 +38,14 @@ int main_a()
     // Präzises Ausgabeformat festlegen; wirt daueraft.
     cout << setprecision(15) << fixed;
 
+    const int width = 25;
+
+    // Überschriften
+    cout << setw(width) << "Naeherung1"
+         << setw(width) << "Naeherung2"
+         << setw(width) << "Std-Log"
+         << endl << endl;
+
     // für alle n ist x = (2^n)-te Wurzel von a.
     // In jedem Schritt wird n erhöht und x und y erhalten ihre entsprechenden
     // Werte für den nächsten Durchlauf.
@@ -47,15 +55,15 @@ int main_a()
         
         l2 *= 2.0 / (1.0 + x);
 
-        cout << setw(20) << l1
-             << setw(20) << l2
-             << setw(20) << log(a) << '\n';
+        cout << setw(width) << l1
+             << setw(width) << l2
+             << setw(width) << log(a) << '\n';
     }
     
     // Ausgabe der Ergebnisse.
-    cout << "Näherung1: " << l1 << '\n'
-         << "Näherung2: " << l2 << '\n'
-         << "log(a)  =  " << log(a) << endl;
+    cout << "Naeherung1: " << l1 << '\n'
+         << "Naeherung2: " << l2 << '\n'
+         << "log(a)   =  " << log(a) << endl;
     
     return 0;
 }
@@ -133,8 +141,8 @@ int main()
         // Entsprechend Teilaufgabe in Unterfunktion weitermachen.
         switch (aufg)
         {
-            case 'a': return main_a();
-            case 'b': return main_b();
+            case 'a': cout << endl << endl; return main_a();
+            case 'b': cout << endl << endl; return main_b();
             default:
                 cout << "Es gibt nur Aufgabenteil a und b." << endl;
         }

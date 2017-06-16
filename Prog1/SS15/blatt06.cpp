@@ -14,6 +14,12 @@ using namespace std;
 /// Berechnet den Binomialkoeffizienten n über k.
 double binom(unsigned n, unsigned k)
 {
+    // Fehler finden.
+    if (k < 0 || n < 0 || k > n)
+    {
+        errno = EDOM;
+        return 0;
+    }
     // Vereinfachen
     if (k > n / 2) k = n - k;
     // Spezialfall abfangen

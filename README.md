@@ -10,3 +10,36 @@ Effizienz ist nur im kleinen Rahmen von Bedeutung. **Die Programme haben keinen 
 Sollte eine Lösung die Aufgabe nicht, nur bedingt oder unzureichend erfüllen, bitte ich jeden Leser, mir das mitzuteilen. Es kommt *allen* zugute.
 
 Es werden nur Lösungen zu Aufgaben eingestellt, deren Abgabetermin in der Vergangenheit liegt.
+
+## Übersicht
+
+Geordnet nach Blattnummer, erst dann nach Semester.
+
+### Programmieren 1
+
+* [Sinus-Funktion](Prog1/SS17/blatt01.cpp)
+* [Pi-Approximation](Prog1/SS17/blatt02.cpp)
+* [Ellipsenumfang](Prog1/SS15/blatt03.cpp)
+* [Logarithmus](Prog1/SS15/blatt04.cpp)
+* [Von-Neumann-Addition und Bit-Multiplikation](Prog1/SS15/blatt05.cpp)
+* [Multinomialkoeffizient](Prog1/SS15/blatt06.cpp)
+* [Cholesky-Zerlegung](Prog1/SS15/blatt07.cpp)
+* [Newton-Maehly-Verfahren](Prog1/SS15/blatt08.cpp)
+* [Base64](Prog1/SS16/blatt08.cpp)
+* [Arithmetische Ausdrücke 1](Prog1/SS15/blatt09.cpp)
+* [Arithmetische Ausdrücke 2](Prog1/SS16/blatt09.cpp)
+* [Datei-Inspektor](Prog1/SS16/blatt11.cpp)
+
+### Programmieren 2
+
+* [Komplexe Zahlen](Prog2/WS14/blatt01.cpp)
+* [Polynome als Vektroren](Prog2/WS14/blatt02.cpp)
+* [Rationale Zahlen](Prog2/WS14/blatt03.cpp)
+* [Tschebyschow--Entwicklung](Prog2/WS14/blatt04.cpp)
+* [Dieder-Hash](Prog2/WS14/blatt05.cpp)
+* [Polynome als Listen](Prog2/WS14/blatt06_a.cpp)
+* [LZW-Algorithmus 1](Prog2/WS14/blatt07_a.cpp)
+* [LZW-Algorithmus 2](Prog2/WS14/blatt07_a_neu.cpp)
+* [Jacobi-Matrix](Prog2/WS14/blatt08.cpp)
+* [Weltkarte (unvollständig)](Prog2/WS14/blatt10.cpp)
+* [Sieb für irreduzible Polynome](Prog2/WS14/blatt12.cpp), siehe auch das Projekt [Modulus](http://github.com/Bolpat/Modulus).

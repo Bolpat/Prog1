@@ -15,7 +15,7 @@ int fehler(string arg, int exitcode)
     case 3:
         cerr <<
             "Falsche Argumente."                                                 "\n"
-            "Verwendung: " << arg << " [m]-[n] [file]"                          "\n"
+            "Verwendung: " << arg << " [m]-[n] [file]"                           "\n"
             "wobei die Zeilen m bis n einer Textdatei ausgegeben werden. "       "\n"
             "Hierbei duerfen m oder n fehlen, wobei dann "                       "\n"
             "m = 0 bzw. n = Anzahl Zeilen ist."                                  "\n"

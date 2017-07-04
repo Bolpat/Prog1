@@ -26,8 +26,8 @@ Geordnet nach Blattnummer, erst dann nach Semester.
 * [Cholesky-Zerlegung](Prog1/SS15/blatt07.cpp)
 * [Newton-Maehly-Verfahren](Prog1/SS15/blatt08.cpp)
 * [Base64](Prog1/SS16/blatt08.cpp)
-* [Arithmetische Ausdrücke 1](Prog1/SS15/blatt09.cpp)
-* [Arithmetische Ausdrücke 2](Prog1/SS16/blatt09.cpp)
+* [Arithmetische Ausdrücke SS 15](Prog1/SS15/blatt09.cpp)
+* [Arithmetische Ausdrücke SS 16](Prog1/SS16/blatt09.cpp)
 * [Datei-Inspektor](Prog1/SS16/blatt11.cpp)
 
 ### Programmieren 2
@@ -35,7 +35,7 @@ Geordnet nach Blattnummer, erst dann nach Semester.
 * [Komplexe Zahlen](Prog2/WS14/blatt01.cpp)
 * [Polynome als Vektroren](Prog2/WS14/blatt02.cpp)
 * [Rationale Zahlen](Prog2/WS14/blatt03.cpp)
-* [Tschebyschow--Entwicklung](Prog2/WS14/blatt04.cpp)
+* [Tschebyschow-Entwicklung](Prog2/WS14/blatt04.cpp)
 * [Dieder-Hash](Prog2/WS14/blatt05.cpp)
 * [Polynome als Listen](Prog2/WS14/blatt06_a.cpp)
 * [LZW-Algorithmus 1](Prog2/WS14/blatt07_a.cpp)

@@ -1,9 +1,9 @@
 # Programmieren für Mathematiker
-Lösungen zu den Übungen der Vorlesung Programieren 1 für Mathematiker. Eventuell folgen dann noch Lösungen für Programmieren 2.
+Lösungen zu den Übungen der Vorlesungen *Programieren 1 und 2 für Mathematiker.*
 
 **Die Lösungen erstzen nicht das Bearbeiten der Aufgaben, den Besuch der Vorlesung oder das genaue Studieren des Materials! Sie dienen dem Vergleich mit der selbst erstellten Arbeit.**
 
-Die Lösungen werden mit größtmöglicher Sorgfalt erstellt und sind getestet (andernfalls wird es vermerkt).
+Die Lösungen werden mit größtmöglicher Sorgfalt erstellt und sind getestet oder es wird andernfalls vermerkt.
 Dennoch können Fehler passieren. Insbesondere können Genauigkeit der Resultate und Fehlerbehandlungen unzureichend sein.
 Effizienz ist nur im kleinen Rahmen von Bedeutung. **Die Programme haben keinen professionellem Anspruch. Sie dienen Anfängern als Demonstation.**
 

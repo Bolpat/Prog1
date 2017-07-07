@@ -19,7 +19,15 @@ double WertOperand();
 
 // Makro: Ruft die fehler-Funktion auf und setzt als ersten Parameter die Zeile des Aufrufs.
 #define FEHLER(s) fehler(__LINE__, (s));
-void fehler(int line, const char * const msg = "");
+void fehler(int line, const char * const msg = "")
+{
+    cout << "Fehler bei " << line << ": " << msg << endl;
+    cout << s << endl;
+    int fehlerpos = ein.eof() ? s.size() : static_cast<size_t>(ein.tellg());
+    for (int i = 0; i < fehlerpos; ++i) cout << ' ';
+    cout << '^' << endl;
+    exit(1);
+}
 
 int main()
 {
@@ -95,13 +103,3 @@ double WertOperand()
     if (func_name == "sqrt")return sqrt(result);
 }
 
-
-void fehler(int line, const char * const msg)
-{
-    cout << "Fehler bei " << line << ": " << msg << endl;
-    cout << s << endl;
-    int fehlerpos = ein.eof() ? s.size() : ein.tellg();
-    for (int i = 0; i < fehlerpos; ++i) cout << ' ';
-    cout << '^' << endl;
-    exit(1);
-}

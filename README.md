@@ -30,6 +30,7 @@ Geordnet nach Blattnummer, erst dann nach Semester.
 * [Arithmetische Ausdrücke SS 15](Prog1/SS15/blatt09.cpp)
 * [Arithmetische Ausdrücke SS 16](Prog1/SS16/blatt09.cpp) (falsch!)
 * [Datei-Inspektor](Prog1/SS16/blatt11.cpp)
+* [Divisionsfreies Radizieren](Prog1/SS17/blatt10.cpp)
 
 ### Programmieren 2
 

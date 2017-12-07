@@ -202,8 +202,18 @@ private:
         return prod;
     }
 
-    /// factor interpretation from ein, i.e. an unsigned integer
     Polynom factor()
+    {
+        Polynom result = operand();
+        if (ein.peek() != '^') return result;
+        ein.get();
+        long n;
+        ein >> n;
+        return pow(result, n);
+    }
+
+    /// operand interpretation from ein, i.e. an unsigned integer
+    Polynom operand()
     {
         if (ein.peek() == '(')
         {

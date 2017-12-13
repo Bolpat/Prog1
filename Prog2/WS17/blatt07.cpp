@@ -62,6 +62,25 @@ public:
 
     void analysieren() {
         // Gitter abarbeiten
+        for (i; M)
+        main_loop:
+        for (j; N)
+        {
+            if (newtonverfahren)
+            {
+                for ( .. suche nst ..)
+                if ( .. gefunden .. )
+                {
+                    ...;
+                    continue main_loop;
+                }
+            }
+            else
+            {
+                nicht_konv += 1
+            }
+        }
+        
         
         // Nullstellen, Haeufigkeiten und Name der Ausgabedatei ausgeben
     }

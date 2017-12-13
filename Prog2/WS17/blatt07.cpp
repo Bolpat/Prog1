@@ -9,6 +9,7 @@ using namespace std;
 
 using Complex = complex<double>;
 
+// Beispiele
 Complex f1 (Complex z) { }
 
 Complex f1s(Complex z) { }
@@ -18,9 +19,9 @@ using CFunc = Complex(Complex);
 bool newtonverfahren(Complex z0, Complex& z, CFunc f, CFunc fs) { }
 
 class Farbe {
-  private:
+private:
     char r,g,b;
-  public:
+public:
     Farbe() {}  
     Farbe(char r_, char g_, char b_) {}
     friend ostream& operator<<(ostream& stream, Farbe farbe) { }
@@ -28,7 +29,7 @@ class Farbe {
 
 
 class Konvergenz{
-  private:
+private:
     CFunc fp;
     CFunc fderivp;
     double a,b,c,d,D;
@@ -39,32 +40,43 @@ class Konvergenz{
     vector<Complex> nullstellen;
     vector<int> haeufigkeiten;
  
-  public:
-    Konvergenz(CFunc fp_, CFunc fderivp_,
-               double a_, double b_, double c_, double d_, int M_, int N_, double D_, string fname_) 
+public:
+    Konvergenz(CFunc fp, CFunc fderivp, double a, double b, double c, double d, int M, int N, double D, string fname) 
+        : fp(fp), fderivp(fderivp), a(a), b(b), c(c), d(d), M(M), N(N), D(D), fname(fname)
     {
-      // mindestens 8 Farben definieren
-
-      // Ausgabedatei oeffnen und Header schreiben
+        // 8 Farben definieren
+        farbtabelle =
+            {
+                {   0,   0,   0 },
+                { 255,   0,   0 },
+                {   0, 255,   0 },
+                {   0,   0, 255 },
+                {   0, 255, 255 },
+                { 255,   0, 255 },
+                { 255, 255,   0 },
+                { 255, 255, 255 }
+            };
+        // Ausgabedatei oeffnen und Header schreiben
+        aus(fname);
     }
 
     void analysieren() {
-      // Gitter abarbeiten
-
-      // Nullstellen, Haeufigkeiten und Name der Ausgabedatei ausgeben
+        // Gitter abarbeiten
+        
+        // Nullstellen, Haeufigkeiten und Name der Ausgabedatei ausgeben
     }
 };
 
 
 int main() 
 { 
-  double a,b,c,d,D;
-  int M,N;
-  
-  // Gitterdaten einlesen
-  
-  Konvergenz konvergenz1(f1,f1s,a,b,c,d,M,N,D,"aus_f1.ppm");
-  konvergenz1.analysieren();
+    double a,b,c,d,D;
+    int M,N;
+    
+    // Gitterdaten einlesen
+    
+    Konvergenz konvergenz1(f1,f1s,a,b,c,d,M,N,D,"aus_f1.ppm");
+    konvergenz1.analysieren();
 
-  return 0;
+    return 0;
 }

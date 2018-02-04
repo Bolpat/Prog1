@@ -66,6 +66,31 @@ public:
         return p;
     }
 
+    // iterates the list once
+    friend Polynom operator+(Polynom p, Polynom q) // copy p, q
+    {
+        p.monoms.merge(q.monoms, [](Monom m, Monom n) { return m.d < n.d; });
+
+        if (p.monoms.size() < 2) return p;
+
+        auto it = p.monoms.begin();
+        do
+        {
+            auto prev = it++;
+            if (prev->d == it->d)
+            {
+                if ((it->a += prev->a) != 0) ++it;
+                else it = p.monoms.erase(it);
+                p.monoms.erase(prev);
+            }
+        }
+        while (it != p.monoms.end());
+
+        return p;
+    }
+
+    // iterates the list twice
+    /*
     friend Polynom operator+(Polynom p, Polynom q) // copy p, q
     {
         p.monoms.merge(q.monoms, [](Monom m, Monom n) { return m.d < n.d; });
@@ -78,13 +103,14 @@ public:
         if (it1->d == it2->d)
         {
             it1->a += it2->a;
-            it2->a = 0;
+            it2->a = 0; // mark second for reasure
         }
 
         p.monoms.remove_if([](Monom m) { return m.a == 0; });
 
         return p;
     }
+    */
 
     friend Polynom operator-(const Polynom & p, const Polynom & q)
     {
@@ -133,7 +159,7 @@ public:
         {
             // ... add the elements together, and if that sum equals 0 ...
             if ((it->a += m.a) == 0)
-                monoms.erase(it); // ... remove it from the list, what increments the iterator to the next element ...
+                it = monoms.erase(it); // ... remove it from the list, what increments the iterator to the next element ...
             else
                 ++it; // ... otherwise increment iterator to the next element manually ...
             monoms.erase(it); // ... and erase it.

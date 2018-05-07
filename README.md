@@ -18,7 +18,7 @@ Geordnet nach Blattnummer, erst dann nach Semester.
 ### Programmieren 1
 
 * [Sinus-Funktion](Prog1/SS17/blatt01.cpp)
-* [Pi-Approximation](Prog1/SS18/blatt02.cpp)
+* [Pi-Approximation](Prog1/SS18/blatt02.cpp) ([mit Funktionszeigern](Prog1/SS18/blatt02_func_param.cpp), [mit Lamdas](Prog1/SS18/blatt02_lambda.cpp))
 * [Ellipsenumfang](Prog1/SS15/blatt03.cpp)
 * [Logarithmus](Prog1/SS15/blatt04.cpp)
 * [Von-Neumann-Addition und Bit-Multiplikation](Prog1/SS15/blatt05.cpp)

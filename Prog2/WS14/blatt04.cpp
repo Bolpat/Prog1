@@ -10,8 +10,7 @@
 using namespace std;
 
 const unsigned N = 2000;
-const double PI = 3.141592653589793238462643383279502884197169399375105820974944;
-
+const double eps = 1e-12;
 
 class TEntwicklung
 {
@@ -19,107 +18,86 @@ class TEntwicklung
     vector<double> c;
   public:
     TEntwicklung(double f(double), unsigned n)
+        : c(n + 1)
     {
-        ++n;
-        double c0 = f(cos(PI / (2.0*n)));
-        for (unsigned j = 1; j < n; ++j)
-        {
-            c0 += f(cos((2.0*j + 1.0)/(2.0*n) * PI));
-        }
+        n += 1;
         
-        c.push_back(c0 / n);
+        for (unsigned j = 0; j < n; ++j)
+        {
+            double cos_arg = M_PI * (2*j + 1) / (2 * n);
+            c[0] += f(cos(cos_arg));
+        }
+        c[0] /= n;
         
         for (unsigned k = 1; k < n; ++k)
-        {  
-            double ck = f(cos(PI/(2.0*n))) * cos(k*PI / (2.0*n));
-            
-            for (unsigned j = 1; j < n; ++j)
-            {
-                ck += f(cos((2.0*j + 1.0)/(2.0*n) * PI)) * cos((2.0*j + 1)/(2.0*n) * k * PI);
-            }
-            c.push_back(2 * ck / n);
-        }
-        /*
-      double c0 = f(cos(PI / (2.0*n + 2.0)));
-      for (unsigned j = 1; j <= n; ++j)
-      {
-        c0 += f(cos((2.0*j + 1.0)/(2.0*n + 2.0) * PI));
-      }
-      
-      c.push_back(c0 / (n+1));
-      
-      for (unsigned k = 1; k <= n; ++k)
-      {  
-        double ck = f(cos(PI/(2.0*n + 2.0))) * cos(k*PI / (2.0*n + 2.0));
-        
-        for (unsigned j = 1; j <= n; ++j)
         {
-          ck += f(cos((2.0*j + 1.0)/(2.0*n + 2.0) * PI)) * cos((2.0*j + 1)/(2.0*n + 2.0) * k * PI);
+            for (unsigned j = 0; j < n; ++j)
+            {
+                double cos_arg = M_PI * (2*j + 1) / (2 * n);
+                c[k] += f(cos(cos_arg)) * cos(cos_arg * k);
+            }
+            c[k] = 2 * c[k] / n;
         }
-        
-        c.push_back(2 * ck / (n+1));
-      }
-        */
-    } 
-
-    double operator()(double x)
-    {
-      unsigned n = c.size() - 1;
-      double skm2 = c[n];
-      double skm1 = skm2 * x + c[n-1];
-      double sk;
-      
-      for (unsigned k = 2; k <= n; ++k)
-      {
-        sk = 2 * x * skm1 - skm2 - c[n-k+1] * x + c[n-k];
-        // Für die nächste Rechnung:
-        skm2 = skm1;
-        skm1 = sk;
-      }
-      
-      return sk;
     }
 
-    friend ostream& operator<<(ostream& stream, TEntwicklung p)
+    double operator()(double x) const
     {
-    // Ausgabe: Tschebyshew-Koeff. mit Index falls Betrag>eps
-      for (unsigned i = 0; i < p.c.size(); ++i)
-        if (abs(p.c[i]) > 1e-12)
-          stream << setw(5) << i << ": " << p.c[i] << endl;
-      
-      return stream;
+        if (c.size() == 0) return 0;
+        if (c.size() == 1) return c[0];
+        
+        const unsigned n = c.size() - 1;
+        double skm2 = c[n];
+        double skm1 = skm2 * x + c[n-1];
+        double sk = 0;
+        for (unsigned k = 2; k <= n; ++k)
+        {
+            sk = 2 * x * skm1 - skm2 - c[n-k+1] * x + c[n-k];
+            // Für die nächste Rechnung:
+            skm2 = skm1;
+            skm1 = sk;
+        }
+        
+        return skm1;
+    }
+
+    friend ostream& operator<<(ostream& stream, TEntwicklung const & p)
+    {
+        // Ausgabe: Tschebyshew-Koeff. mit Index falls Betrag>eps
+        for (unsigned i = 0; i < p.c.size(); ++i)
+            if (abs(p.c[i]) > eps)
+                stream << "[" << setw(2) << i << "] " << p.c[i] << endl;
+        return stream;
     }
 };
 
-/* constexpr */
-inline double f(double x) { return ((x - 3.0)*x + 2.0)*x - 5.0; }
+double f(double x) { return ((x - 3.0)*x + 2.0)*x - 5.0; }
 
-inline double g(double x) { return 2.0 + x*cos(x); }
+double g(double x) { return 2.0 + x*cos(x); }
 
-inline double h(double x) { return exp(-4*x*x) * sin(4.0*x); }
-/* ~constexpr */
+double h(double x) { return exp(-4*x*x) * sin(4.0*x); }
 
-double dist(double f(double), TEntwicklung p)
+double dist(double f(double), TEntwicklung const & p)
 {
-  // max|f(x_i)-p.wert(x_i)| berechnen
-  double erg = abs(f(-1) - p(-1));
-  const double h = 2.0 / N;
-  for (unsigned i = 1; i <= N; ++i)
-  {
-    double nerg = abs(f(i*h - 1) - p(i*h - 1));
-    if (nerg > erg) erg = nerg;
-  }
-  return erg;
+    // max_i |f(x_i) - p(x_i)| berechnen
+    double d = 0;
+    const double h = 2.0 / N;
+    for (unsigned i = 0; i <= N; ++i)
+    {
+        const double x = i*h - 1.0;
+        d = max(d, abs(f(x) - p(x)));
+    }
+    return d;
 }
 
 int main() 
 {
-  TEntwicklung p(f,  3),
-               q(g, 30),
-               r(h, 50);
+  TEntwicklung
+    p(f,  3),
+    q(g, 30),
+    r(h, 50);
 
-  cout << p << "dist(f, p) = " << dist(f, p) << endl
-       << q << "dist(g, q) = " << dist(g, q) << endl
-       << r << "dist(h, r) = " << dist(h, r) << endl;
+    cout << p << "dist(f, p) = " << dist(f, p) << endl;
+    cout << q << "dist(g, q) = " << dist(g, q) << endl;
+    cout << r << "dist(h, r) = " << dist(h, r) << endl;
 }
 

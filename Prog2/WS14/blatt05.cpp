@@ -4,44 +4,48 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
-/* Weitere Includedateien */
-
-
+#include <stdexcept>
 
 using namespace std;
 
 class dieder
 {
-private: 
+private:
     int i;
-    
+
 public:
-    dieder(int _i = 0): i(_i) { }
-    
+    dieder(int i = 0)
+    : i(i)
+    {
+        if (!(0 <= i && i < 10)) throw invalid_argument("value must be between 0 and 9");
+    }
+
     dieder inv() const
     {
-        static const int inverse[] = { 0,  4, 3, 2, 1,  5,  6, 7, 8, 9 };
+        static const int inverse[] = { 0, 4, 3, 2, 1, 5, 6, 7, 8, 9 };
         return dieder(inverse[i]);
     }
-    
+
     dieder operator*(dieder d) const
     {
         const int & j = d.i;
-        
+
         if (i <= 4)
-            if (j <= 4) return dieder((i+j) % 5);
-            else        return dieder(5 + ((i+j) % 5));
-            
-        else // 5 <= i
-            if (j <= 4) return dieder(5 + ((i-j) % 5));
-            else        return dieder(i-j < 0  ?  5+i-j  :  i-j);
+        {
+            if (j <= 4) return dieder((i + j) % 5);
+            else        return dieder(5 + (i + j) % 5);
+        }
+        else
+        {
+            if (j <= 4) return dieder(5 + (i - j) % 5);
+            else        return dieder(i - j < 0  ?  5 + i - j  :  i - j);
+        }
     }
-    
+
     dieder & operator*=(dieder d) { return *this = *this * d; }
-    
+
     bool operator==(dieder d) const { return i == d.i; }
-    
+
     operator int() const { return i; }
 };
 
@@ -52,7 +56,10 @@ void invtable()
     for (int j = 0; j < 10; ++j)
     {
         dieder di(i), dj(j);
-        if ((int)(di*dj) == 0) cout << (int)dj << ", ";
+        if (static_cast<int>(di * dj) == 0)
+        {
+            cout << static_cast<int>(dj) << ", ";
+        }
     }
     cout << endl;
 }
@@ -61,68 +68,62 @@ void invtable()
 int perm(int i, int k)
 {
     static const int pi[] = { 1, 5, 7, 6, 2, 8, 3, 0, 9, 4 };
-    for (; k > 0; --k) i = pi[i];
+    while (k-- > 0) i = pi[i];
     return i;
-}
-
-int main()
-{
-    invtable();
 }
 
 int _main()
 {
-    string inp;
-    vector<int> digits;
-    
+    invtable();
+}
+
+int main()
+{
     /* Eingabe lesen, auf String speichern */
+    string inp;
     cout << "Geben Sie einen Code ein." << endl;
     cin >> inp;
+
+    vector<int> digits;
     digits.reserve(inp.size());
-    
+
     /* Eingabestring in Ziffernkette umwandeln */
     for (unsigned k = 0; k < inp.size(); ++k)
     {
-        if (isdigit(inp[k])) 
+        int j = 0;
+        switch (inp[k])
         {
-            digits.push_back(perm(inp[k] - '0', k));
-        }
-        else
-        {
-            int j = 0;
-            switch (inp[k])
-            {
-                case 'z': case 'Z': ++j;
-                case 'y': case 'Y': ++j;
-                case 'u': case 'U': ++j;
-                case 's': case 'S': ++j;
-                case 'n': case 'N': ++j;
-                case 'l': case 'L': ++j;
-                case 'k': case 'K': ++j;
-                case 'g': case 'G': ++j;
-                case 'd': case 'D': ++j;
-                case 'a': case 'A': digits.push_back(perm(j, k));
+            case '9': case 'z': case 'Z': ++j;
+            case '8': case 'y': case 'Y': ++j;
+            case '7': case 'u': case 'U': ++j;
+            case '6': case 's': case 'S': ++j;
+            case '5': case 'n': case 'N': ++j;
+            case '4': case 'l': case 'L': ++j;
+            case '3': case 'k': case 'K': ++j;
+            case '2': case 'g': case 'G': ++j;
+            case '1': case 'd': case 'D': ++j;
+            case '0': case 'a': case 'A':
+                digits.push_back(perm(j, k));
                 break;
-                default: throw string("Character ivalid");
-            }
+            default: throw string("Character ivalid");
         }
     }
-    
+
     /* Produkt in Diedergruppe berechnen */
-    dieder d;
+    dieder prod;
     for (unsigned i = 0; i < digits.size(); ++i)
     {
-        d *= dieder(digits[i]);
+        prod *= dieder(digits[i]);
     }
-    
+
     /* Ausgabe in Grossbuchstaben mit angehaengter Pruefziffer */
-    
     for (unsigned i = 0; i < inp.size(); ++i)
     {
-        cout << (char)( ('a' <= inp[i] && inp[i] <= 'z') ? inp[i] - 32
-        : inp[i] );
+        if ('a' <= inp[i] && inp[i] <= 'z')
+            cout << static_cast<char>(inp[i] - 'a' + 'A');
+        else
+            cout << inp[i];
     }
-    cout << d.inv();
-    cout << endl;
+    cout << prod.inv() << endl;
     return 0;
 }

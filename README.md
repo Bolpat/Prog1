@@ -36,13 +36,11 @@ Geordnet nach Blattnummer, erst dann nach Semester.
 
 * [Komplexe Zahlen](Prog2/WS14/blatt01.cpp)
 * [Polynome als Vektroren](Prog2/WS14/blatt02.cpp)
-* [Rationale Zahlen](Prog2/WS14/blatt03.cpp)
+* Rationale Zahlen [1](Prog2/WS14/blatt03.cpp) und [2](Prog2/WS18/blatt05.cpp) (C++14)
 * [Tschebyschow-Entwicklung](Prog2/WS14/blatt04.cpp)
 * [Dieder-Hash](Prog2/WS14/blatt05.cpp)
-* [Polynome als Listen](Prog2/WS14/blatt06_a.cpp) (alt)
-* [Polynome als Listen](Prog2/WS17/blatt06.cpp) (neu, benötigt C++14)
-* [LZW-Algorithmus 1](Prog2/WS14/blatt07_a.cpp)
-* [LZW-Algorithmus 2](Prog2/WS14/blatt07_a_neu.cpp)
+* Polynome als Listen [1](Prog2/WS14/blatt06_a.cpp) und [2](Prog2/WS17/blatt06.cpp) (C++14)
+* LZW-Algorithmus [1](Prog2/WS14/blatt07_a.cpp) und [2](Prog2/WS14/blatt07_a_neu.cpp)
 * [Jacobi-Matrix](Prog2/WS14/blatt08.cpp)
 * [Weltkarte (unvollständig)](Prog2/WS14/blatt10.cpp)
 * [Sieb für irreduzible Polynome](Prog2/WS14/blatt12.cpp), siehe auch das Projekt [Modulus](http://github.com/Bolpat/Modulus).

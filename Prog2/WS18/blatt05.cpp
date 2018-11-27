@@ -246,7 +246,7 @@ class rational
     }
     friend rational operator/(rational s, rational t)
     {
-        if (t == 0) throw invalid_argument("operator%: division by zero");
+        if (t == 0) throw invalid_argument("operator/: division by zero");
         return s * rational(t.q, t.p);
     }
 

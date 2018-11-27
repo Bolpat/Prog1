@@ -34,7 +34,7 @@ Geordnet nach Blattnummer, erst dann nach Semester.
 
 * [Komplexe Zahlen](Prog2/WS14/blatt01.cpp) (WS14)
 * [Polynome als Vektroren](Prog2/WS14/blatt02.cpp) (WS14)
-* Rationale Zahlen [1](Prog2/WS14/blatt03.cpp) (Ws14) und [2](Prog2/WS18/blatt05.cpp) (WS18, C++14)
+* Rationale Zahlen [1](Prog2/WS14/blatt03.cpp) (Ws14) und [2](Prog2/WS18/blatt05.cpp) (WS18, C++14) [Entwurf](Prog2/WS18/blatt05_entwurf.cpp)
 * [Tschebyschow-Entwicklung](Prog2/WS14/blatt04.cpp) (WS14)
 * [Dieder-Hash](Prog2/WS14/blatt05.cpp) (WS14)
 * Polynome als Listen [1](Prog2/WS14/blatt06_a.cpp) (WS14) und [2](Prog2/WS17/blatt06.cpp) (WS17, C++14)

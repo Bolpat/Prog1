@@ -7,21 +7,19 @@
 namespace checked_int
 {
 
-template<typename T>
-bool has_twos_complement = std::numeric_limits<T>::is_signed && std::numeric_limits<T>::min() + std::numeric_limits<T>::max() < T(0);
-
-template<typename T>
+template <typename T>
 class checked
 {
     T value;
   public:
-    checked(T value = T()) : value(value) { }
-    operator T() const { return value; }
+    constexpr checked(T value = T()) : value(value) { }
+    constexpr operator T() const { return value; }
 
     checked operator+() const { return *this; }
     checked operator-() const
     {
-        if (has_twos_complement<T> && value == std::numeric_limits<T>::min())
+        if (std::numeric_limits<T>::is_signed && std::numeric_limits<T>::min() + std::numeric_limits<T>::max() < T(0))
+        if (value == std::numeric_limits<T>::min())
         {
             throw std::overflow_error("operator-: arithmetic overflow on negation");
         }
@@ -78,8 +76,8 @@ template<typename T1, typename T2>
 auto operator+(checked<T1> lhs, checked<T2> rhs)
 {
     using Common = decltype(lhs.value + rhs.value);
-    if (rhs.value > T2(0) && lhs.value > std::numeric_limits<Common>::max() - rhs.value
-     || rhs.value < T2(0) && lhs.value < std::numeric_limits<Common>::min() - rhs.value)
+    if (rhs.value > T2(0) && std::numeric_limits<Common>::max() - rhs.value < lhs.value
+     || rhs.value < T2(0) && std::numeric_limits<Common>::min() - rhs.value > lhs.value)
     {
         throw std::overflow_error("operator+: arithmetic overflow");
     }
@@ -90,8 +88,8 @@ template<typename T1, typename T2>
 auto operator-(checked<T1> lhs, checked<T2> rhs)
 {
     using Common = decltype(lhs.value - rhs.value);
-    if (rhs.value < T2(0) && lhs.value > std::numeric_limits<Common>::max() + rhs.value
-     || rhs.value > T2(0) && lhs.value < std::numeric_limits<Common>::min() + rhs.value)
+    if (rhs.value < T2(0) && std::numeric_limits<Common>::max() + rhs.value < lhs.value
+     || rhs.value > T2(0) && std::numeric_limits<Common>::min() + rhs.value > lhs.value)
     {
         throw std::overflow_error("operator-: arithmetic overflow");
     }
@@ -102,18 +100,16 @@ template<typename T1, typename T2>
 auto operator*(checked<T1> lhs, checked<T2> rhs)
 {
     using Common = decltype(lhs.value * rhs.value);
-    if (has_twos_complement<Common>)
-    if (
-        lhs.value == T1(-1) && rhs.value == std::numeric_limits<Common>::min()
-     || rhs.value == T2(-1) && lhs.value == std::numeric_limits<Common>::min())
+    if (std::numeric_limits<Common>::is_signed && std::numeric_limits<Common>::min() + std::numeric_limits<Common>::max() < Common(0) && (
+            lhs.value == T1(-1) && rhs.value == std::numeric_limits<Common>::min()
+         || rhs.value == T2(-1) && lhs.value == std::numeric_limits<Common>::min()))
     {
         throw std::overflow_error("operator*: arithmetic overflow on negation");
     }
-    
     if (rhs < 0 && lhs < 0)
     {
-        rhs.value = -rhs.value;
-        lhs.value = -lhs.value;
+        rhs = -rhs;
+        lhs = -lhs;
     }
     // one of rhs and lhs >= 0; for == 0, nothing to check; for < 0, the other must be >= 0, so if > 0, divide max by it.
     if (rhs > 0 && (
@@ -121,7 +117,8 @@ auto operator*(checked<T1> lhs, checked<T2> rhs)
         || lhs.value < std::numeric_limits<Common>::min() / rhs.value)
      || lhs > 0 && (
            rhs.value > std::numeric_limits<Common>::max() / lhs.value
-        || rhs.value < std::numeric_limits<Common>::min() / lhs.value))
+        || rhs.value < std::numeric_limits<Common>::min() / lhs.value)
+    )
     {
         throw std::overflow_error("operator*: arithmetic overflow");
     }
@@ -133,8 +130,8 @@ auto operator/(checked<T1> lhs, checked<T2> rhs)
 {
     if (rhs == T2(0)) throw std::domain_error("operator/: division by zero");
     using Common = decltype(lhs.value / rhs.value);
-    if (has_twos_complement<Common> && std::numeric_limits<T2>::is_signed
-        && rhs == T2(-1) && lhs.value == std::numeric_limits<Common>::min())
+    if (std::numeric_limits<Common>::is_signed && std::numeric_limits<Common>::min() + std::numeric_limits<Common>::max() < Common(0) &&
+        std::numeric_limits<T2>::is_signed && rhs == T2(-1) && lhs.value == std::numeric_limits<Common>::min())
     {
         throw std::overflow_error("operator/: arithmetic overflow on negation");
     }
@@ -152,8 +149,7 @@ auto operator%(checked<T1> lhs, checked<T2> rhs)
 template<typename T>
 checked<T> check(T value) { return checked<T>(value); }
 
-} // namespace
-
+}
 
 /*
 int main()
@@ -177,15 +173,15 @@ using namespace checked_int;
 #define INSPECT(x) do { std::cerr << #x << " = " << (x) << std::endl; } while (0)
 #define EXPECT(x, r) do { std::cerr << "is " << #x << " = " << (x) << " equal to " << (r) << " = " << #r << "?" << std::endl; } while (0)
 
-template <typename T> class rational;
 #define INSPECT_RAT(x) do { std::cerr << #x << " = "; _inspect_rat(x); } while (0)
-template<typename T> void _inspect_rat(rational<T> const & r) { std::cerr << r << " = " << static_cast<long double>(r) << std::endl; }
+template<typename T> void _inspect_rat(rational<T> r) { std::cerr << r << " = " << static_cast<long double>(r) << std::endl; }
 
 template <typename T>
 class rational
 {
   private:
     checked<T> p, q;
+    // T p, q;
 
     static T gcd(T a, T b)
     {
@@ -254,7 +250,8 @@ class rational
         return s * rational(t.q, t.p);
     }
 
-    friend T whole(rational const & r) { /* note: integer division is intentional! */ return r.p / r.q; }
+    // note: integer division is intentional!
+    friend T whole(rational const & r) { return r.p / r.q; }
     friend T div(rational const & s, rational const & t) { return whole(s / t); }
     friend rational operator%(rational const & s, rational const & t) { return s - div(s, t) * t; }
 
@@ -279,12 +276,12 @@ class rational
     friend rational pow(rational b, int n)
     {
         if (n == 0) return 1;
+        if (b == 0) return b;
         if (n < 0)
         {
             b = 1 / b;
             n = -checked<int>(n);
         }
-        if (b == 0 || n == 1) return b;
         unsigned h = ~(~0u >> 1);
         while (!(n & h)) h >>= 1;
         rational result = b;
@@ -321,7 +318,7 @@ class rational
 
     friend ostream& operator<<(ostream& stream, rational const & r)
     {
-        if (r.q == T(1)) return stream << r.p;
+        if (r.q == 1) return stream << r.p;
         return stream << reinterpret_cast<ostringstream&>(ostringstream() << r.p << '/' << r.q).str();
     }
     friend istream& operator>>(istream& stream, rational & r)
@@ -488,5 +485,4 @@ int main()
     {
         cout << "for n = " << setw(2) << n << ": *** overflow ***" << endl;
     }
-    return 0;
 }
